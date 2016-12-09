@@ -10,19 +10,17 @@ import net.liftweb.util.Helpers._
 class Form {
   var name = ""
 
-  val formRenderer = SHtml.idMemoize { renderer =>
-    ".name" #> SHtml.text(name, name = _)
-
+  private val formRenderer = SHtml.idMemoize { renderer =>
+    ".name" #> SHtml.text(name, name = _) &
+    ".save" #> SHtml.ajaxOnSubmit(() => {
+      name = "hello " + name
+      S.notice(name)
+      renderer.setHtml()
+    })
   }
 
   def render = {
     SHtml.makeFormsAjax andThen
-      "form" #> formRenderer &
-      "type=submit" #> SHtml.ajaxOnSubmit(() => {
-        name = "hello " + name
-        S.notice(name)
-        formRenderer.setHtml()
-        )
-      }
-
+    "#container" #> formRenderer
   }
+}
