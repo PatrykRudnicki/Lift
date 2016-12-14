@@ -8,9 +8,30 @@
   <div id="main" class="lift:surround?with=default&at=content">
       <div data-lift="Form.render" id="container">
           <form>
-            Name: <input class="name"><br>
+            Name: <input class="firstName"><br>
+            Last name: <input class="lastName"><br>
+            Age: <input class="age"><br>
+            Sex: <select class="sex">
+
+            </select><br>
             <input type="submit" value="Submit" class="save">
           </form>
+      </div>
+      <div data-lift="Form.renderUsers" id="users">
+            <table>
+                <tr>
+                    <td>First name</td>
+                    <td>Last name</td>
+                    <td>Age</td>
+                    <td>Sex</td>
+                </tr>
+                <tr class="users">
+                    <td class="firstName"></td>
+                    <td class="lastName"></td>
+                    <td class="age"></td>
+                    <td class="sex"></td>
+                </tr>
+            </table>
       </div>
   </div>
   </body>
