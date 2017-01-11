@@ -1,6 +1,6 @@
 #FileLock
-#Tue Dec 20 13:04:46 CET 2016
-hostName=DESKTOP-4J7CJKQ
-id=1591c1e8fab4c1d51cc71af4ac9abce807564315885
+#Wed Jan 11 15:26:21 CET 2017
+hostName=192.168.1.1
+id=1598debee1fc4e452324a78b9dfe53f6d96adf810db
 method=file
-server=192.168.138.1\:64887
+server=192.168.1.1\:57465
