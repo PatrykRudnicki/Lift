@@ -19,6 +19,14 @@ class Form {
   var choice = ""
   var searchedUsers: ArrayBuffer[User] = ArrayBuffer[User]()
 
+  def loadUsers: ArrayBuffer[User] = {
+    if (searchField.isEmpty) {
+      Users.users
+    } else {
+      searchedUsers
+    }
+  }
+
   private val formRenderer = SHtml.idMemoize { renderer =>
     ".firstName" #> SHtml.text(firstName, firstName = _) &
     ".lastName" #> SHtml.text(lastName, lastName = _) &
@@ -32,7 +40,7 @@ class Form {
   }
 
   private val usersRenderer = SHtml.idMemoize { renderer =>
-    ".users" #> Users.users.map{ user =>
+    ".users" #> loadUsers.map{ user =>
       ".firstName *" #> user.firstName &
       ".lastName *" #> user.lastName &
       ".age *" #> user.age &
