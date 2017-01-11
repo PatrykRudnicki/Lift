@@ -17,13 +17,12 @@ class Form {
   var sex = ""
   var searchField = ""
   var choice = ""
-  var searchedUsers: ArrayBuffer[User] = ArrayBuffer[User]()
 
   def loadUsers: ArrayBuffer[User] = {
     if (searchField.isEmpty) {
       Users.users
     } else {
-      searchedUsers
+      Users.users.filter(_.lastName == searchField)
     }
   }
 
@@ -40,7 +39,7 @@ class Form {
   }
 
   private val usersRenderer = SHtml.idMemoize { renderer =>
-    ".users" #> loadUsers.map{ user =>
+    ".users" #> loadUsers.map { user =>
       ".firstName *" #> user.firstName &
       ".lastName *" #> user.lastName &
       ".age *" #> user.age &
@@ -50,33 +49,9 @@ class Form {
 
   private val usersSearch = SHtml.idMemoize { renderer =>
     ".search" #> SHtml.text(searchField, searchField = _) &
-      ".save" #> SHtml.ajaxOnSubmit(() => {
-        searchedUsers = Users.users.filter(_.lastName == searchField)
-        renderer.setHtml() & searchRenderer.setHtml()
-      })
-  }
-
-  private val usersSearch2 = SHtml.idMemoize { renderer =>
-    ".choice" #> SHtml.select(Seq(("first", "firstName"), ("last", "lastName"), ("age", "age"), ("sex", "sex")), Full("firstName"), choice = _) &
-    ".search" #> SHtml.text(searchField, searchField = _) &
     ".save" #> SHtml.ajaxOnSubmit(() => {
-      choice match{
-        case "firstName" => searchedUsers = Users.users.filter(_.firstName == searchField)
-        case "lastName" => searchedUsers = Users.users.filter(_.lastName == searchField)
-        case "age" => searchedUsers = Users.users.filter(_.age == searchField)
-        case "sex" => searchedUsers = Users.users.filter(_.sex == searchField)
-      }
-      renderer.setHtml() & searchRenderer.setHtml()
+      renderer.setHtml() & usersRenderer.setHtml()
     })
-  }
-
-  private val searchRenderer = SHtml.idMemoize { renderer =>
-    ".users" #> searchedUsers.map{ user =>
-      ".firstName *" #> user.firstName &
-      ".lastName *" #> user.lastName &
-      ".age *" #> user.age &
-      ".sex *" #> user.sex
-    }
   }
 
   def render = {
@@ -94,8 +69,4 @@ class Form {
     "#search" #> usersSearch
   }
 
-  def search2 = {
-    SHtml.makeFormsAjax andThen
-    "#search2" #> usersSearch2
-  }
 }
