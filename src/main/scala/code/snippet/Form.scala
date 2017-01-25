@@ -22,7 +22,12 @@ class Form {
     if (searchField.isEmpty) {
       Users.users
     } else {
-      Users.users.filter(_.lastName == searchField)
+      choice match {
+        case "firstName" => Users.users.filter(_.firstName == searchField)
+        case "lastName" => Users.users.filter(_.lastName == searchField)
+        case "age" => Users.users.filter(_.age == searchField)
+        case "sex" => Users.users.filter(_.sex == searchField)
+      }
     }
   }
 
@@ -48,6 +53,7 @@ class Form {
   }
 
   private val usersSearch = SHtml.idMemoize { renderer =>
+    ".choice" #> SHtml.select(Seq(("firstName", "FirstName"), ("lastName", "LastName"), ("age", "Age"), ("sex", "Sex")), Full("lastName"), choice = _) &
     ".search" #> SHtml.text(searchField, searchField = _) &
     ".save" #> SHtml.ajaxOnSubmit(() => {
       renderer.setHtml() & usersRenderer.setHtml()
