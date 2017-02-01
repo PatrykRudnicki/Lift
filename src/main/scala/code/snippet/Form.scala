@@ -37,8 +37,10 @@ class Form {
     ".age" #> SHtml.text(age, age = _) &
     ".sex" #> SHtml.select(Seq(("M", "Male"), ("F", "Female")), Full("Male"), sex = _) &
     ".save" #> SHtml.ajaxOnSubmit(() => {
-      val user = User(firstName, lastName, age, sex)
-      Users.users += user
+      if(!firstName.isEmpty && !lastName.isEmpty && !age.isEmpty){
+        val user = User(firstName, lastName, age, sex)
+        Users.users += user
+      }
       renderer.setHtml() & usersRenderer.setHtml()
     })
   }
@@ -53,7 +55,7 @@ class Form {
   }
 
   private val usersSearch = SHtml.idMemoize { renderer =>
-    ".choice" #> SHtml.select(Seq(("firstName", "FirstName"), ("lastName", "LastName"), ("age", "Age"), ("sex", "Sex")), Full("lastName"), choice = _) &
+    ".choice" #> SHtml.select(Seq(("firstName", "FirstName"), ("lastName", "LastName"), ("age", "Age"), ("sex", "Sex")), Full(choice), choice = _) &
     ".search" #> SHtml.text(searchField, searchField = _) &
     ".save" #> SHtml.ajaxOnSubmit(() => {
       renderer.setHtml() & usersRenderer.setHtml()
